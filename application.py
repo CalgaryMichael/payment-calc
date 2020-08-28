@@ -3,7 +3,7 @@ import os
 import sys
 
 from payment_calc.models import Scenario
-from payment_calc.payment_calc import decrease_debt
+from payment_calc.payment_calc import build_projected_debt_reduction
 
 
 def main():
@@ -14,7 +14,7 @@ def main():
     args = parser.parse_args()
 
     scenario = Scenario.of(args.scenario_file)
-    decrease_debt(scenario, sort_key=args.sort, reverse=args.sort_reverse)
+    build_projected_debt_reduction(scenario, sort_key=args.sort, reverse=args.sort_reverse)
 
 
 if __name__ == '__main__':
