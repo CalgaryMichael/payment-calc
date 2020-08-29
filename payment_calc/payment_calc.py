@@ -5,7 +5,7 @@ import sys
 import os
 from typing import List, Tuple
 
-from payment_calc import date_utils
+from payment_calc import date_utils, save
 from payment_calc.models import Debt, DebtOutcome, Outcome, Scenario
 
 
@@ -21,19 +21,14 @@ def build_projected_debt_reduction(
         reverse=reverse
     )
 
+    outcomes = list()
     current_date = scenario.start_date
     while True:
-        print()
-        print(f'{current_date.month} {current_date.year}')
-        print('----------------')
-        outcome = reduce_debt(debts, scenario.start_date, current_date)
-
-        for debt_outcome in outcome.debt_outcomes:
-            print(f'{debt_outcome.debt_name} - {round(debt_outcome.debt_total, 2)}')
-
-        if not outcome.outstanding_debt():
+        outcomes.append(reduce_debt(debts, scenario.start_date, current_date))
+        if not outcomes[-1].outstanding_debt():
             break
         current_date = date_utils.next_month(current_date)
+    save.write_outcomes_to_file(output_fp, outcomes)
 
 
 def reduce_debt(
