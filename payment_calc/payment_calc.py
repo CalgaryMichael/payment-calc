@@ -3,7 +3,7 @@ import io
 import json
 import sys
 import os
-from typing import List, Tuple
+from typing import List, Iterator, Tuple
 
 from payment_calc import date_utils, save
 from payment_calc.models import Debt, DebtOutcome, Outcome, Scenario
@@ -21,14 +21,18 @@ def build_projected_debt_reduction(
         reverse=reverse
     )
 
-    outcomes = list()
-    current_date = scenario.start_date
+    outcomes = reduce_debts(debts, scenario.start_date)
+    save.write_outcomes_to_file(output_fp, outcomes)
+
+
+def reduce_debts(debts: List[Debt], start_date: datetime.date) -> Iterator[Outcome]:
+    current_date = start_date
     while True:
-        outcomes.append(reduce_debt(debts, scenario.start_date, current_date))
-        if not outcomes[-1].outstanding_debt():
+        outcome = reduce_debt(debts, start_date, current_date)
+        yield outcome
+        if not outcome.outstanding_debt():
             break
         current_date = date_utils.next_month(current_date)
-    save.write_outcomes_to_file(output_fp, outcomes)
 
 
 def reduce_debt(
