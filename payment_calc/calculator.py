@@ -45,7 +45,7 @@ def reduce_debt(
     debt_outcomes = []
     remainder = 0
     for i, debt in enumerate(debts):
-        payment_total = (sum(debt.payments) * payment_clocks) + remainder
+        payment_total = (get_active_payments(debt, end_date) * payment_clocks) + remainder
         debt_total, remainder = subtract_with_remainder(debt.debt_total, payment_total, debt.interest_rate)
         debt_outcome = DebtOutcome(
             debt_name=debt.debt_name,
@@ -55,6 +55,14 @@ def reduce_debt(
     return Outcome(
         effective_date=end_date,
         debt_outcomes=debt_outcomes
+    )
+
+
+def get_active_payments(debt: Debt, current_date: datetime.date) -> float:
+    return sum(
+        p.amount
+        for p in debt.payments
+        if p.is_active(current_date)
     )
 
 
