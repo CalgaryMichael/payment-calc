@@ -1,9 +1,36 @@
 import datetime
 from payment_calc import calculator as under_test
+from payment_calc.models.outcome import DebtOutcome
 from payment_calc.models.scenario import Debt, DebtPayment
 
 
-def test_get_active_payments__no_payments():
+def test_reduce_debt__no_remainder(debt: Debt):
+    actual_debt_outcome, actual_remainder = under_test.reduce_debt(
+        debt=debt,
+        current_date=datetime.date(2020, 3, 1),
+        payment_clocks=1,
+        remainder=0.00
+    )
+    expected_debt_outcome = DebtOutcome(debt_name='jazz', debt_total=91.00)
+    expected_remainder = 0.00
+    assert actual_debt_outcome == expected_debt_outcome
+    assert actual_remainder == expected_remainder
+
+
+def test_reduce_debt__with_remainder(debt: Debt):
+    actual_debt_outcome, actual_remainder = under_test.reduce_debt(
+        debt=debt,
+        current_date=datetime.date(2020, 3, 1),
+        payment_clocks=1,
+        remainder=120.00
+    )
+    expected_debt_outcome = DebtOutcome(debt_name='jazz', debt_total=0.00)
+    expected_remainder = 29.00
+    assert actual_debt_outcome == expected_debt_outcome
+    assert actual_remainder == expected_remainder
+
+
+def test_sum_active_payments__no_payments():
     current_date = datetime.date(2020, 6, 1)
     model = Debt(
         debt_name='jazz',
@@ -11,11 +38,11 @@ def test_get_active_payments__no_payments():
         payments=[],
         interest_rate=0.12
     )
-    actual = under_test.get_active_payments(model, current_date)
+    actual = under_test.sum_active_payments(model, current_date)
     assert actual == 0.00
 
 
-def test_get_active_payments__no_active_payments():
+def test_sum_active_payments__no_active_payments():
     current_date = datetime.date(2020, 6, 1)
     model = Debt(
         debt_name='jazz',
@@ -29,11 +56,11 @@ def test_get_active_payments__no_active_payments():
         ],
         interest_rate=0.12
     )
-    actual = under_test.get_active_payments(model, current_date)
+    actual = under_test.sum_active_payments(model, current_date)
     assert actual == 0.00
 
 
-def test_get_active_payments__active_payments():
+def test_sum_active_payments__active_payments():
     current_date = datetime.date(2020, 6, 1)
     model = Debt(
         debt_name='jazz',
@@ -47,11 +74,11 @@ def test_get_active_payments__active_payments():
         ],
         interest_rate=0.12
     )
-    actual = under_test.get_active_payments(model, current_date)
+    actual = under_test.sum_active_payments(model, current_date)
     assert actual == 10.00
 
 
-def test_get_active_payments__mixed_active_payments():
+def test_sum_active_payments__mixed_active_payments():
     current_date = datetime.date(2020, 6, 1)
     model = Debt(
         debt_name='jazz',
@@ -70,7 +97,7 @@ def test_get_active_payments__mixed_active_payments():
         ],
         interest_rate=0.12
     )
-    actual = under_test.get_active_payments(model, current_date)
+    actual = under_test.sum_active_payments(model, current_date)
     assert actual == 10.00
 
 
