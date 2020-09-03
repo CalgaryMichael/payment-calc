@@ -66,7 +66,11 @@ def get_active_payments(debt: Debt, current_date: datetime.date) -> float:
     )
 
 
-def subtract_with_remainder(value, payment, interest_rate) -> Tuple[float, float]:
+def subtract_with_remainder(
+        value: float,
+        payment: float,
+        interest_rate: float
+) -> Tuple[float, float]:
     value *= 1 + (interest_rate / 12)
     return max(value - payment, 0), max(payment - value, 0)
 
