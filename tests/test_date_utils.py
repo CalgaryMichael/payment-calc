@@ -11,10 +11,10 @@ def test_month_diff__no_difference():
 
 
 def test_month_diff__first_in_future():
-    d1 = datetime.date(2020, 3, 1)
-    d2 = datetime.date(2020, 1, 1)
+    d1 = datetime.date(2021, 1, 1)
+    d2 = datetime.date(2020, 8, 1)
     actual = under_test.month_diff(d1, d2)
-    assert actual == 2
+    assert actual == 5
 
 
 def test_month_diff__second_in_future():
