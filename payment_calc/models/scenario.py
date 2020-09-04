@@ -16,8 +16,8 @@ class DebtPayment:
     def __init__(
             self,
             amount: float,
-            start_date: Optional[str],
-            end_date: Optional[str]
+            start_date: Optional[str]=None,
+            end_date: Optional[str]=None
     ) -> None:
         self.amount = amount
         self.start_date = (
@@ -45,6 +45,9 @@ class Debt:
     debt_total: float
     payments: List[DebtPayment]
     interest_rate: float
+
+    def __hash__(self):
+        return hash(self.debt_name)
 
     @classmethod
     def of(cls, *args, **kwargs):

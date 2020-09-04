@@ -5,7 +5,7 @@ import sys
 import os
 from typing import List, Iterator, Tuple
 
-from payment_calc import date_utils, save
+from payment_calc import date_utils, save, sorting
 from payment_calc.models import Debt, DebtOutcome, Outcome, Scenario
 
 
@@ -15,29 +15,28 @@ def build_projected_debt_reduction(
         sort_key: str='debt_name',
         reverse: bool=False
 ) -> None:
-    debts = sorted(
+    outcomes = reduce_debts(
         scenario.debts,
-        key=lambda x: getattr(x, sort_key),
+        scenario.start_date,
+        sort_key=sort_key,
         reverse=reverse
     )
-
-    outcomes = reduce_debts(debts, scenario.start_date)
     save.write_outcomes_to_file(output_fp, outcomes)
 
 
-def reduce_debts(debts: List[Debt], current_date: datetime.date) -> Iterator[Outcome]:
+def reduce_debts(debts: List[Debt], current_date: datetime.date, **kwargs) -> Iterator[Outcome]:
+    debts = sorting.sort_debts(debts, **kwargs)
     while True:
         current_date = date_utils.next_month(current_date)
         outcome = reduce_debts_for_month(debts, current_date)
         yield outcome
         if not outcome.outstanding_debt():
             break
-        debts = refresh_debts(debts, outcome)
+        debts = refresh_debts(debts, outcome, **kwargs)
 
 
 def reduce_debts_for_month(
         debts: List[Debt],
-        start_date: datetime.date,
         end_date: datetime.date
 ) -> Outcome:
     """Calculate debt reduction cycle for the amount of months between the provided dates"""
@@ -74,7 +73,7 @@ def reduce_debt(
     return debt_outcome, remainder
 
 
-def refresh_debts(debts: List[Debt], last_outcome: DebtOutcome) -> List[Debt]:
+def refresh_debts(debts: List[Debt], last_outcome: DebtOutcome, **kwargs) -> List[Debt]:
     """
     Return a list of debts with the debt totals from the last outcome.
     List will be ordered with the settled debts at the top.
@@ -85,8 +84,7 @@ def refresh_debts(debts: List[Debt], last_outcome: DebtOutcome) -> List[Debt]:
                 debt.debt_total = debt_outcome.debt_total
         return debt
 
-    output = list(map(_map_debt, debts[:]))
-    return output
+    return sorting.sort_debts(debts=list(map(_map_debt, debts)), **kwargs)
 
 
 def sum_active_payments(debt: Debt, current_date: datetime.date) -> float:
