@@ -13,6 +13,7 @@ def run():
     parser.add_argument('--output-fp', type=str, default=None)
     parser.add_argument('--sort', type=str, default='debt_total')
     parser.add_argument('--sort-reverse', action='store_true', default=False)
+    parser.add_argument('--transpose', action='store_true', default=False)
     args = parser.parse_args()
 
     scenario = Scenario.of(args.scenario_file)
@@ -21,6 +22,7 @@ def run():
         scenario,
         output_fp=output_fp,
         sort_key=args.sort,
-        reverse=args.sort_reverse
+        reverse=args.sort_reverse,
+        transpose=args.transpose
     )
 

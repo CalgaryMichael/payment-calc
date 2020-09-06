@@ -13,7 +13,8 @@ def build_projected_debt_reduction(
         scenario: Scenario,
         output_fp: str=None,
         sort_key: str='debt_name',
-        reverse: bool=False
+        reverse: bool=False,
+        transpose: bool=False
 ) -> None:
     outcomes = reduce_debts(
         scenario.debts,
@@ -21,7 +22,7 @@ def build_projected_debt_reduction(
         sort_key=sort_key,
         reverse=reverse
     )
-    save.write_outcomes_to_file(output_fp, outcomes)
+    save.write_outcomes_to_file(output_fp, outcomes, transpose=transpose)
 
 
 def reduce_debts(debts: List[Debt], current_date: datetime.date, **kwargs) -> Iterator[Outcome]:
