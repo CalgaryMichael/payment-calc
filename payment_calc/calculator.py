@@ -33,7 +33,7 @@ def reduce_debts(debts: List[Debt], current_date: datetime.date, **kwargs) -> It
         yield outcome
         if not outcome.outstanding_debt():
             break
-        debts = refresh_debts(debts, outcome, **kwargs)
+        debts = refresh_debts(debts, outcome)
 
 
 def reduce_debts_for_month(
@@ -74,7 +74,7 @@ def reduce_debt(
     return debt_outcome, remainder
 
 
-def refresh_debts(debts: List[Debt], last_outcome: DebtOutcome, **kwargs) -> List[Debt]:
+def refresh_debts(debts: List[Debt], last_outcome: DebtOutcome) -> List[Debt]:
     """
     Return a list of debts with the debt totals from the last outcome.
     List will be ordered with the settled debts at the top.
@@ -85,7 +85,9 @@ def refresh_debts(debts: List[Debt], last_outcome: DebtOutcome, **kwargs) -> Lis
                 debt.debt_total = debt_outcome.debt_total
         return debt
 
-    return sorting.sort_debts(debts=list(map(_map_debt, debts)), **kwargs)
+    return sorting.sort_settled_on_top(
+        debts=list(map(_map_debt, debts))
+    )
 
 
 def sum_active_payments(debt: Debt, current_date: datetime.date) -> float:
