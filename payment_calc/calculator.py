@@ -61,7 +61,7 @@ def reduce_debt(
         current_date: datetime.date,
         remainder: float
 ) -> Tuple[DebtOutcome, float]:
-    payment_total = sum_active_payments(debt, current_date) + remainder
+    payment_total = debt.sum_active_payments(current_date) + remainder
     debt_total, remainder = subtract_with_remainder(
         debt.debt_total,
         payment_total,
@@ -87,14 +87,6 @@ def refresh_debts(debts: List[Debt], last_outcome: DebtOutcome) -> List[Debt]:
 
     return sorting.sort_settled_on_top(
         debts=list(map(_map_debt, debts))
-    )
-
-
-def sum_active_payments(debt: Debt, current_date: datetime.date) -> float:
-    return sum(
-        p.amount
-        for p in debt.payments
-        if p.is_active(current_date)
     )
 
 

@@ -10,16 +10,19 @@ from typing import List, Optional
 class DebtPayment:
     """Represents a single payment towards a debt"""
     amount: float
+    carry_over: bool = True
     start_date: Optional[datetime.date] = None
     end_date: Optional[datetime.date] = None
 
     def __init__(
             self,
             amount: float,
+            carry_over: bool=True,
             start_date: Optional[str]=None,
             end_date: Optional[str]=None
     ) -> None:
         self.amount = amount
+        self.carry_over = carry_over
         self.start_date = (
             datetime.datetime.strptime(start_date, '%Y-%m').date()
             if start_date
@@ -53,6 +56,14 @@ class Debt:
     def of(cls, *args, **kwargs):
         kwargs['payments'] = list(DebtPayment(**p) for p in kwargs.get('payments', []))
         return cls(*args, **kwargs)
+
+    def sum_active_payments(self, current_date: datetime.date) -> float:
+        """Returns the sum of all active payments for a given date"""
+        return sum(
+            p.amount
+            for p in self.payments
+            if p.is_active(current_date) and (self.debt_total > 0 or p.carry_over)
+        )
 
 
 @dataclass
