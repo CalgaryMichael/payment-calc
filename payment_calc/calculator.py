@@ -61,15 +61,16 @@ def reduce_debt(
         current_date: datetime.date,
         remainder: float
 ) -> Tuple[DebtOutcome, float]:
-    payment_total = debt.sum_active_payments(current_date) + remainder
+    payment_sum = debt.sum_active_payments(current_date) + remainder
     debt_total, remainder = subtract_with_remainder(
         debt.debt_total,
-        payment_total,
+        payment_sum,
         debt.interest_rate
     )
     debt_outcome = DebtOutcome(
         debt_name=debt.debt_name,
-        debt_total=debt_total
+        debt_total=debt_total,
+        payment_sum=payment_sum - remainder
     )
     return debt_outcome, remainder
 

@@ -1,12 +1,13 @@
 import datetime
 from dataclasses import dataclass
-from typing import List
+from typing import List, Optional
 
 
 @dataclass
 class DebtOutcome:
     debt_name: str
     debt_total: float
+    payment_sum: Optional[float]
 
 
 @dataclass
