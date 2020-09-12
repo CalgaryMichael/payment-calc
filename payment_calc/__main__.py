@@ -1,6 +1,4 @@
 import argparse
-import os
-import sys
 
 from payment_calc.models import Scenario
 from payment_calc.calculator import build_projected_debt_reduction

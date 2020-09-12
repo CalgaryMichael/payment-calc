@@ -1,8 +1,4 @@
 import datetime
-import io
-import json
-import sys
-import os
 from typing import List, Iterator, Tuple
 
 from payment_calc import date_utils, save, sorting
@@ -43,7 +39,7 @@ def reduce_debts_for_month(
     """Calculate debt reduction cycle for the amount of months between the provided dates"""
     debt_outcomes = []
     remainder = 0
-    for i, debt in enumerate(debts):
+    for debt in debts:
         debt_outcome, remainder = reduce_debt(
             debt,
             end_date,

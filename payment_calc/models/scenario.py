@@ -1,9 +1,8 @@
 import datetime
 import io
 import json
-import os
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import List
 
 from .debt import Debt
 from .savings import SavingsAccount
