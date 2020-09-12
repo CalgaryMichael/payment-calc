@@ -1,6 +1,6 @@
 import datetime
 
-from payment_calc.models import scenario as under_test
+from payment_calc.models import debt as under_test
 
 
 def test_debt_payment__is_active__no_dates():

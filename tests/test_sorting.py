@@ -1,5 +1,5 @@
 from payment_calc import sorting as under_test
-from payment_calc.models.scenario import Debt, DebtPayment
+from payment_calc.models.debt import Debt, DebtPayment
 
 
 def test_sort_debts():

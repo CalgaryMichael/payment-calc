@@ -1,7 +1,7 @@
 import datetime
 from payment_calc import calculator as under_test
+from payment_calc.models.debt import Debt, DebtPayment
 from payment_calc.models.outcome import DebtOutcome, Outcome
-from payment_calc.models.scenario import Debt, DebtPayment
 
 
 def test_reduce_debt__no_remainder(debt: Debt):

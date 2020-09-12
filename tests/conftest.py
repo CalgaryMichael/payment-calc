@@ -1,6 +1,6 @@
 import pytest
 
-from payment_calc.models.scenario import Debt, DebtPayment
+from payment_calc.models.debt import Debt, DebtPayment
 
 
 @pytest.fixture(scope='module')

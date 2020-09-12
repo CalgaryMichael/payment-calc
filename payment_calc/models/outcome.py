@@ -7,7 +7,7 @@ from typing import List, Optional
 class DebtOutcome:
     debt_name: str
     debt_total: float
-    payment_sum: Optional[float]
+    payment_sum: float
 
 
 @dataclass
