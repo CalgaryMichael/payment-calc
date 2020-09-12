@@ -25,7 +25,8 @@ def build_output_data_shape(outcomes: List[Outcome], transpose: bool) -> list:
             for debt_outcome in outcome.debt_outcomes:
                 transposed_data[debt_outcome.debt_name].append(dict(
                     effective_date=outcome.effective_date,
-                    debt_total=debt_outcome.debt_total
+                    debt_total=debt_outcome.debt_total,
+                    payment_sum=debt_outcome.payment_sum
                 ))
         output_data = list({'debt_name': k, 'debt_total': v} for k, v in transposed_data.items())
     else:

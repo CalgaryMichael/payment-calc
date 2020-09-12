@@ -9,15 +9,15 @@ def test_build_output_data_shape__not_transposed():
         Outcome(
             effective_date=datetime.date(2020, 1, 1),
             debt_outcomes=[
-                DebtOutcome(debt_name='jazz 1', debt_total=100.00),
-                DebtOutcome(debt_name='jazz 2', debt_total=200.00)
+                DebtOutcome(debt_name='jazz 1', debt_total=100.00, payment_sum=0.00),
+                DebtOutcome(debt_name='jazz 2', debt_total=200.00, payment_sum=0.00)
             ]
         ),
         Outcome(
             effective_date=datetime.date(2020, 2, 1),
             debt_outcomes=[
-                DebtOutcome(debt_name='jazz 1', debt_total=50.00),
-                DebtOutcome(debt_name='jazz 2', debt_total=100.00)
+                DebtOutcome(debt_name='jazz 1', debt_total=50.00, payment_sum=0.00),
+                DebtOutcome(debt_name='jazz 2', debt_total=100.00, payment_sum=0.00)
             ]
         )
     ]
@@ -26,15 +26,15 @@ def test_build_output_data_shape__not_transposed():
         {
             'effective_date': datetime.date(2020, 1, 1),
             'debt_outcomes': [
-                {'debt_name': 'jazz 1', 'debt_total': 100.00},
-                {'debt_name': 'jazz 2', 'debt_total': 200.00},
+                {'debt_name': 'jazz 1', 'debt_total': 100.00, 'payment_sum': 0.00},
+                {'debt_name': 'jazz 2', 'debt_total': 200.00, 'payment_sum': 0.00},
             ]
         },
         {
             'effective_date': datetime.date(2020, 2, 1),
             'debt_outcomes': [
-                {'debt_name': 'jazz 1', 'debt_total': 50.00},
-                {'debt_name': 'jazz 2', 'debt_total': 100.00},
+                {'debt_name': 'jazz 1', 'debt_total': 50.00, 'payment_sum': 0.00},
+                {'debt_name': 'jazz 2', 'debt_total': 100.00, 'payment_sum': 0.00},
             ]
         }
     ]
@@ -46,15 +46,15 @@ def test_build_output_data_shape__transposed():
         Outcome(
             effective_date=datetime.date(2020, 1, 1),
             debt_outcomes=[
-                DebtOutcome(debt_name='jazz 1', debt_total=100.00),
-                DebtOutcome(debt_name='jazz 2', debt_total=200.00)
+                DebtOutcome(debt_name='jazz 1', debt_total=100.00, payment_sum=0.00),
+                DebtOutcome(debt_name='jazz 2', debt_total=200.00, payment_sum=0.00)
             ]
         ),
         Outcome(
             effective_date=datetime.date(2020, 2, 1),
             debt_outcomes=[
-                DebtOutcome(debt_name='jazz 1', debt_total=50.00),
-                DebtOutcome(debt_name='jazz 2', debt_total=100.00)
+                DebtOutcome(debt_name='jazz 1', debt_total=50.00, payment_sum=0.00),
+                DebtOutcome(debt_name='jazz 2', debt_total=100.00, payment_sum=0.00)
             ]
         )
     ]
@@ -63,15 +63,15 @@ def test_build_output_data_shape__transposed():
         {
             'debt_name': 'jazz 1',
             'debt_total': [
-                {'effective_date': datetime.date(2020, 1, 1), 'debt_total': 100.00},
-                {'effective_date': datetime.date(2020, 2, 1), 'debt_total': 50.00}
+                {'effective_date': datetime.date(2020, 1, 1), 'debt_total': 100.00, 'payment_sum': 0.00},
+                {'effective_date': datetime.date(2020, 2, 1), 'debt_total': 50.00, 'payment_sum': 0.00}
             ]
         },
         {
             'debt_name': 'jazz 2',
             'debt_total': [
-                {'effective_date': datetime.date(2020, 1, 1), 'debt_total': 200.00},
-                {'effective_date': datetime.date(2020, 2, 1), 'debt_total': 100.00}
+                {'effective_date': datetime.date(2020, 1, 1), 'debt_total': 200.00, 'payment_sum': 0.00},
+                {'effective_date': datetime.date(2020, 2, 1), 'debt_total': 100.00, 'payment_sum': 0.00}
             ]
         }
     ]
