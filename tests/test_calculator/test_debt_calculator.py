@@ -1,5 +1,5 @@
 import datetime
-from payment_calc import calculator as under_test
+from payment_calc.calculator import debt_calculator as under_test
 from payment_calc.models.debt import Debt, DebtPayment
 from payment_calc.models.outcome import DebtOutcome, Outcome
 

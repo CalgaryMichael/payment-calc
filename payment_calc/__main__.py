@@ -1,7 +1,7 @@
 import argparse
 
 from payment_calc.models import Scenario
-from payment_calc.calculator import build_projected_debt_reduction
+from payment_calc.calculator.debt_calculator import build_projected_debt_reduction
 from payment_calc.save import default_output_fp
 
 
