@@ -38,18 +38,14 @@ def test_refresh_debts__no_change():
             interest_rate=0.12
         )
     ]
-    outcome = Outcome(
-        effective_date=None,
-        debt_outcomes=[
-            DebtOutcome(
-                debt_name='jazz',
-                debt_total=50.00,
-                payment_sum=0.00
-            )
-        ],
-        savings_outcomes=[]
-    )
-    actual = under_test.refresh_debts(debts, outcome)
+    debt_outcomes = [
+        DebtOutcome(
+            debt_name='jazz',
+            debt_total=50.00,
+            payment_sum=0.00
+        )
+    ]
+    actual = under_test.refresh_debts(debts, debt_outcomes)
     assert actual == debts
 
 
@@ -62,18 +58,14 @@ def test_refresh_debts__debt_reduced():
             interest_rate=0.12
         )
     ]
-    outcome = Outcome(
-        effective_date=None,
-        debt_outcomes=[
-            DebtOutcome(
-                debt_name='jazz',
-                debt_total=50.00,
-                payment_sum=0.00
-            )
-        ],
-        savings_outcomes=[]
-    )
-    actual = under_test.refresh_debts(debts, outcome)
+    debt_outcomes = [
+        DebtOutcome(
+            debt_name='jazz',
+            debt_total=50.00,
+            payment_sum=0.00
+        )
+    ]
+    actual = under_test.refresh_debts(debts, debt_outcomes)
     expected = [
         Debt(
             debt_name='jazz',
@@ -100,23 +92,19 @@ def test_refresh_debts__settled_at_top():
             interest_rate=0.12
         )
     ]
-    outcome = Outcome(
-        effective_date=None,
-        debt_outcomes=[
-            DebtOutcome(
-                debt_name='jazz 1',
-                debt_total=50.00,
-                payment_sum=0.00
-            ),
-            DebtOutcome(
-                debt_name='jazz 2',
-                debt_total=0.00,
-                payment_sum=0.00
-            )
-        ],
-        savings_outcomes=[]
-    )
-    actual = under_test.refresh_debts(debts, outcome)
+    debt_outcomes = [
+        DebtOutcome(
+            debt_name='jazz 1',
+            debt_total=50.00,
+            payment_sum=0.00
+        ),
+        DebtOutcome(
+            debt_name='jazz 2',
+            debt_total=0.00,
+            payment_sum=0.00
+        )
+    ]
+    actual = under_test.refresh_debts(debts, debt_outcomes)
     expected = [
         Debt(
             debt_name='jazz 2',

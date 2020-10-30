@@ -41,13 +41,13 @@ def reduce_debt(
     return debt_outcome, remainder
 
 
-def refresh_debts(debts: List[Debt], last_outcome: DebtOutcome) -> List[Debt]:
+def refresh_debts(debts: List[Debt], lastest_outcomes: List[DebtOutcome]) -> List[Debt]:
     """
     Return a list of debts with the debt totals from the last outcome.
     List will be ordered with the settled debts at the top.
     """
     def _map_debt(debt: Debt) -> Debt:
-        for debt_outcome in last_outcome.debt_outcomes:
+        for debt_outcome in lastest_outcomes:
             if debt.debt_name == debt_outcome.debt_name:
                 debt.debt_total = debt_outcome.debt_total
         return debt
