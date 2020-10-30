@@ -13,7 +13,7 @@ class Scenario:
     """Represents the expected shape of a scenario file"""
     start_date: datetime.date
     debts: List[Debt]
-    savings: List[SavingsAccount]
+    savings_accounts: List[SavingsAccount]
 
     @classmethod
     def of(cls, fp):
@@ -29,6 +29,6 @@ class Scenario:
         return cls(
             start_date=start_date,
             debts=list(Debt.of(**d) for d in data.get('debts', [])),
-            savings=list(SavingsAccount(**s) for s in data.get('', []))
+            savings_accounts=list(SavingsAccount.of(**s) for s in data.get('savings_accounts', []))
         )
 
