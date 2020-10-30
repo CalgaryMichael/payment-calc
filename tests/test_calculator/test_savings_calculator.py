@@ -83,3 +83,59 @@ def test_filter_active__inactive():
     actual = under_test.filter_active(savings_accounts, current_date)
     assert list(actual) == []
 
+
+def test_refresh_savings__none():
+    savings_accounts = []
+    savings_outcomes = []
+    actual = under_test.refresh_savings(savings_accounts, savings_outcomes)
+    assert actual == []
+
+
+def test_refresh_savings__update_price():
+    savings_accounts = [
+        SavingsAccount(
+            name='Savings Account 1',
+            apy=0.00,
+            initial_capital=1000.00,
+            payments=[],
+            projected_date=None
+        ),
+        SavingsAccount(
+            name='Savings Account 2',
+            apy=0.00,
+            initial_capital=1900.00,
+            payments=[],
+            projected_date=None
+        ),
+    ]
+    savings_outcomes = [
+        SavingsOutcome(
+            savings_name='Savings Account 1',
+            savings_total=1500.00,
+            contribution=500.00
+        ),
+        SavingsOutcome(
+            savings_name='Savings Account 2',
+            savings_total=2000.00,
+            contribution=100.00
+        )
+    ]
+    actual = under_test.refresh_savings(savings_accounts, savings_outcomes)
+    expected = [
+        SavingsAccount(
+            name='Savings Account 1',
+            apy=0.00,
+            initial_capital=1500.00,
+            payments=[],
+            projected_date=None
+        ),
+        SavingsAccount(
+            name='Savings Account 2',
+            apy=0.00,
+            initial_capital=2000.00,
+            payments=[],
+            projected_date=None
+        ),
+    ]
+    assert actual == expected
+

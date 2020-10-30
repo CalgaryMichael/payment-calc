@@ -43,4 +43,5 @@ def build_monthly_outcomes(
         if not outcome.outstanding_debt():
             break
         debts = debt_calculator.refresh_debts(debts, debt_outcomes)
+        savings_accounts = savings_calculator.refresh_savings(savings_accounts, savings_outcomes)
 

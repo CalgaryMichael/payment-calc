@@ -30,3 +30,14 @@ def filter_active(
         savings_accounts
     )
 
+
+def refresh_savings(savings_accounts: List[SavingsAccount], lastest_outcomes: List[SavingsOutcome]) -> List[SavingsAccount]:
+    """Return a list of savings accounts with the savings totals from the last outcome"""
+    def _map_savings(savings_account: SavingsAccount) -> SavingsAccount:
+        for savings_outcome in lastest_outcomes:
+            if savings_account.name == savings_outcome.savings_name:
+                savings_account.initial_capital = savings_outcome.savings_total
+        return savings_account
+
+    return list(map(_map_savings, savings_accounts))
+
