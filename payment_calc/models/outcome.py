@@ -11,9 +11,17 @@ class DebtOutcome:
 
 
 @dataclass
+class SavingsOutcome:
+    savings_name: str
+    savings_total: float
+    contribution: float
+
+
+@dataclass
 class Outcome:
     effective_date: datetime.date
     debt_outcomes: List[DebtOutcome]
+    savings_outcomes: List[SavingsOutcome]
 
     def outstanding_debt(self) -> bool:
         """Determine if any of the outcome contains any outstanding debts"""

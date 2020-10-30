@@ -1,4 +1,5 @@
 import datetime
+
 from payment_calc.calculator import debt_calculator as under_test
 from payment_calc.models.debt import Debt, DebtPayment
 from payment_calc.models.outcome import DebtOutcome, Outcome
@@ -45,7 +46,8 @@ def test_refresh_debts__no_change():
                 debt_total=50.00,
                 payment_sum=0.00
             )
-        ]
+        ],
+        savings_outcomes=[]
     )
     actual = under_test.refresh_debts(debts, outcome)
     assert actual == debts
@@ -68,7 +70,8 @@ def test_refresh_debts__debt_reduced():
                 debt_total=50.00,
                 payment_sum=0.00
             )
-        ]
+        ],
+        savings_outcomes=[]
     )
     actual = under_test.refresh_debts(debts, outcome)
     expected = [
@@ -110,7 +113,8 @@ def test_refresh_debts__settled_at_top():
                 debt_total=0.00,
                 payment_sum=0.00
             )
-        ]
+        ],
+        savings_outcomes=[]
     )
     actual = under_test.refresh_debts(debts, outcome)
     expected = [

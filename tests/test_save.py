@@ -11,14 +11,16 @@ def test_build_output_data_shape__not_transposed():
             debt_outcomes=[
                 DebtOutcome(debt_name='jazz 1', debt_total=100.00, payment_sum=0.00),
                 DebtOutcome(debt_name='jazz 2', debt_total=200.00, payment_sum=0.00)
-            ]
+            ],
+            savings_outcomes=[]
         ),
         Outcome(
             effective_date=datetime.date(2020, 2, 1),
             debt_outcomes=[
                 DebtOutcome(debt_name='jazz 1', debt_total=50.00, payment_sum=0.00),
                 DebtOutcome(debt_name='jazz 2', debt_total=100.00, payment_sum=0.00)
-            ]
+            ],
+            savings_outcomes=[]
         )
     ]
     actual = under_test.build_output_data_shape(outcomes, transpose=False)
@@ -28,14 +30,16 @@ def test_build_output_data_shape__not_transposed():
             'debt_outcomes': [
                 {'debt_name': 'jazz 1', 'debt_total': 100.00, 'payment_sum': 0.00},
                 {'debt_name': 'jazz 2', 'debt_total': 200.00, 'payment_sum': 0.00},
-            ]
+            ],
+            'savings_outcomes': []
         },
         {
             'effective_date': datetime.date(2020, 2, 1),
             'debt_outcomes': [
                 {'debt_name': 'jazz 1', 'debt_total': 50.00, 'payment_sum': 0.00},
                 {'debt_name': 'jazz 2', 'debt_total': 100.00, 'payment_sum': 0.00},
-            ]
+            ],
+            'savings_outcomes': []
         }
     ]
     assert actual == expected
@@ -48,14 +52,16 @@ def test_build_output_data_shape__transposed():
             debt_outcomes=[
                 DebtOutcome(debt_name='jazz 1', debt_total=100.00, payment_sum=0.00),
                 DebtOutcome(debt_name='jazz 2', debt_total=200.00, payment_sum=0.00)
-            ]
+            ],
+            savings_outcomes=[]
         ),
         Outcome(
             effective_date=datetime.date(2020, 2, 1),
             debt_outcomes=[
                 DebtOutcome(debt_name='jazz 1', debt_total=50.00, payment_sum=0.00),
                 DebtOutcome(debt_name='jazz 2', debt_total=100.00, payment_sum=0.00)
-            ]
+            ],
+            savings_outcomes=[]
         )
     ]
     actual = under_test.build_output_data_shape(outcomes, transpose=True)

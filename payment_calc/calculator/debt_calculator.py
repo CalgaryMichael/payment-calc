@@ -1,41 +1,14 @@
 import datetime
-from typing import List, Iterator, Tuple
+from typing import List, Tuple
 
-from payment_calc import date_utils, save, sorting
-from payment_calc.models import Debt, DebtOutcome, Outcome, Scenario
-
-
-def build_projected_debt_reduction(
-        scenario: Scenario,
-        output_fp: str=None,
-        sort_key: str='debt_name',
-        reverse: bool=False,
-        transpose: bool=False
-) -> None:
-    outcomes = reduce_debts(
-        scenario.debts,
-        scenario.start_date,
-        sort_key=sort_key,
-        reverse=reverse
-    )
-    save.write_outcomes_to_file(output_fp, outcomes, transpose=transpose)
-
-
-def reduce_debts(debts: List[Debt], current_date: datetime.date, **kwargs) -> Iterator[Outcome]:
-    debts = sorting.sort_debts(debts, **kwargs)
-    while True:
-        current_date = date_utils.next_month(current_date)
-        outcome = reduce_debts_for_month(debts, current_date)
-        yield outcome
-        if not outcome.outstanding_debt():
-            break
-        debts = refresh_debts(debts, outcome)
+from payment_calc import sorting
+from payment_calc.models import Debt, DebtOutcome
 
 
 def reduce_debts_for_month(
         debts: List[Debt],
         end_date: datetime.date
-) -> Outcome:
+) -> List[DebtOutcome]:
     """Calculate debt reduction cycle for the amount of months between the provided dates"""
     debt_outcomes = []
     remainder = 0
@@ -46,10 +19,7 @@ def reduce_debts_for_month(
             remainder
         )
         debt_outcomes.append(debt_outcome)
-    return Outcome(
-        effective_date=end_date,
-        debt_outcomes=debt_outcomes
-    )
+    return debt_outcomes
 
 
 def reduce_debt(
