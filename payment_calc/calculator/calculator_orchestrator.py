@@ -32,8 +32,12 @@ def build_monthly_outcomes(
     debts = sorting.sort_debts(debts, **kwargs)
     while True:
         current_date = date_utils.next_month(current_date)
-        debt_outcomes = debt_calculator.reduce_debts_for_month(debts, current_date)
-        savings_outcomes = savings_calculator.project_savings_for_month(savings_accounts, 0.00, current_date)
+        debt_outcomes, debt_rollover = debt_calculator.reduce_debts_for_month(debts, current_date)
+        savings_outcomes = savings_calculator.project_savings_for_month(
+            savings_accounts,
+            debt_rollover,
+            current_date
+        )
         outcome = Outcome(
             effective_date=current_date,
             debt_outcomes=debt_outcomes,

@@ -8,7 +8,7 @@ from payment_calc.models import Debt, DebtOutcome
 def reduce_debts_for_month(
         debts: List[Debt],
         end_date: datetime.date
-) -> List[DebtOutcome]:
+) -> Tuple[List[DebtOutcome], float]:
     """Calculate debt reduction cycle for the amount of months between the provided dates"""
     debt_outcomes = []
     remainder = 0
@@ -19,7 +19,7 @@ def reduce_debts_for_month(
             remainder
         )
         debt_outcomes.append(debt_outcome)
-    return debt_outcomes
+    return debt_outcomes, remainder
 
 
 def reduce_debt(
