@@ -7,10 +7,7 @@ from payment_calc.models import DebtOutcome, SavingsAccount, SavingsOutcome, Sav
 def test_project_savings_for_month__no_savings_account():
     current_date = datetime.date(2020, 2, 1)
     savings_accounts = []
-    debt_outcomes = [
-        DebtOutcome(debt_name='jazz', debt_total=100, payment_sum=25)
-    ]
-    actual = under_test.project_savings_for_month(savings_accounts, debt_outcomes, current_date)
+    actual = under_test.project_savings_for_month(savings_accounts, 0.00, current_date)
     assert actual == []
 
 
@@ -25,10 +22,7 @@ def test_project_savings_for_month__with_savings_account():
             projected_date=None
         )
     ]
-    debt_outcomes = [
-        DebtOutcome(debt_name='jazz', debt_total=100, payment_sum=25)
-    ]
-    actual = under_test.project_savings_for_month(savings_accounts, debt_outcomes, current_date)
+    actual = under_test.project_savings_for_month(savings_accounts, 0.00, current_date)
     expected = [
         SavingsOutcome(
             savings_name='Savings Account 1',
@@ -36,6 +30,28 @@ def test_project_savings_for_month__with_savings_account():
             contribution=50.00
         )
     ]
+    assert actual == expected
+
+
+def test_calculate_total_contribution__no_rollover():
+    actual = under_test.calculate_total_contribution(
+        initial_capital=100.00,
+        base_contribution=50.00,
+        apy=0.01,
+        debt_rollover=0.00
+    )
+    expected = 50.08
+    assert actual == expected
+
+
+def test_calculate_total_contribution__with_rollover():
+    actual = under_test.calculate_total_contribution(
+        initial_capital=100.00,
+        base_contribution=50.00,
+        apy=0.01,
+        debt_rollover=10.00
+    )
+    expected = 60.08
     assert actual == expected
 
 

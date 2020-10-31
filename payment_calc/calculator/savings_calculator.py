@@ -1,17 +1,22 @@
 import datetime
 from typing import Iterator, List
 
-from payment_calc.models import DebtOutcome, SavingsAccount, SavingsOutcome
+from payment_calc.models import SavingsAccount, SavingsOutcome
 
 
 def project_savings_for_month(
         savings_accounts: List[SavingsAccount],
-        debt_outcomes: List[DebtOutcome],
+        debt_rollover: float,
         current_date: datetime.date
 ) -> List[SavingsOutcome]:
     savings_outcomes = []
     for savings_account in filter_active(savings_accounts, current_date):
-        contribution = savings_account.sum_active_payments(current_date)
+        contribution = calculate_total_contribution(
+            savings_account.initial_capital,
+            savings_account.sum_active_payments(current_date),
+            savings_account.apy,
+            debt_rollover
+        )
         savings_total = savings_account.initial_capital + contribution
         savings_outcomes.append(SavingsOutcome(
             savings_name=savings_account.name,
@@ -19,6 +24,17 @@ def project_savings_for_month(
             contribution=contribution
         ))
     return savings_outcomes
+
+
+def calculate_total_contribution(
+        initial_capital: float,
+        base_contribution: float,
+        apy: float,
+        debt_rollover: float
+) -> float:
+    interest = initial_capital * (apy / 12)
+    return round(interest + base_contribution + debt_rollover, 2)
+
 
 
 def filter_active(
